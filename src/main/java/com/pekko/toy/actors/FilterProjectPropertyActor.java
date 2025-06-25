@@ -10,14 +10,17 @@ public class FilterProjectPropertyActor extends AbstractBehavior<FilterProjectPr
 
     public interface Command {}
 
-    public static Behavior<Command> create() {
-        return Behaviors.setup(FilterProjectPropertyActor::new);
-    }
+    public static Behavior<Command> create(int poolIndex, int instanceIndex) {
+        return Behaviors.setup(context -> new FilterProjectPropertyActor(context, poolIndex, instanceIndex));    }
 
-    private FilterProjectPropertyActor(ActorContext<Command> context) {
+    private final int poolIndex;
+    private final int instanceIndex;
+
+    private FilterProjectPropertyActor(ActorContext<Command> context, int poolIndex, int instanceIndex) {
         super(context);
-        context.getLog().info("FilterProjectPropertyActor created");
-    }
+        this.poolIndex = poolIndex;
+        this.instanceIndex = instanceIndex;
+        context.getLog().info("FilterProjectPropertyActor from pool {} instance {} is created", poolIndex, instanceIndex);    }
 
     @Override
     public Receive<Command> createReceive() {

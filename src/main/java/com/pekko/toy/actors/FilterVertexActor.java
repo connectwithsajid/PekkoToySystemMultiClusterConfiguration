@@ -10,13 +10,17 @@ public class FilterVertexActor extends AbstractBehavior<FilterVertexActor.Comman
 
     public interface Command {}
 
-    public static Behavior<Command> create() {
-        return Behaviors.setup(FilterVertexActor::new);
+    public static Behavior<Command> create(int poolIndex, int instanceIndex) {
+        return Behaviors.setup(context -> new FilterVertexActor(context, poolIndex, instanceIndex));
     }
+    private final int poolIndex;
+    private final int instanceIndex;
 
-    private FilterVertexActor(ActorContext<Command> context) {
+    private FilterVertexActor(ActorContext<Command> context, int poolIndex, int instanceIndex) {
         super(context);
-        context.getLog().info("FilterVertexActor created");
+        this.poolIndex = poolIndex;
+        this.instanceIndex = instanceIndex;
+        context.getLog().info("FilterVertexActor from pool {} instance {} is created", poolIndex, instanceIndex);
     }
 
     @Override

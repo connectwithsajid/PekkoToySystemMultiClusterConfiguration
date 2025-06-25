@@ -10,13 +10,18 @@ public class FilterEdgeActor extends AbstractBehavior<FilterEdgeActor.Command> {
 
     public interface Command {}
 
-    public static Behavior<Command> create() {
-        return Behaviors.setup(FilterEdgeActor::new);
+    public static Behavior<Command> create(int poolIndex, int instanceIndex) {
+        return Behaviors.setup(context -> new FilterEdgeActor(context, poolIndex, instanceIndex));
     }
+    private final int poolIndex;
+    private final int instanceIndex;
 
-    private FilterEdgeActor(ActorContext<Command> context) {
+
+    private FilterEdgeActor(ActorContext<Command> context, int poolIndex, int instanceIndex) {
         super(context);
-        context.getLog().info("FilterEdgeActor created");
+        this.poolIndex = poolIndex;
+        this.instanceIndex = instanceIndex;
+        context.getLog().info("FilterEdgeActor from pool {} instance {} is created", poolIndex, instanceIndex);
     }
 
     @Override

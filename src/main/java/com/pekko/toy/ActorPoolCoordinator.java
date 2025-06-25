@@ -33,19 +33,19 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
             int instances = poolConfig.getInt("instances");
             int poolCount = poolConfig.hasPath("pools") ? poolConfig.getInt("pools") : 1;
 
-            for (int p = 0; p < poolCount; p++) {
-                for (int i = 0; i < instances; i++) {
+            for (int p = 1; p < poolCount+1; p++) {
+                for (int i = 1; i < instances+1; i++) {
                     switch (type) {
                         case "vertex":
-                            context.spawn(FilterVertexActor.create(),
+                            context.spawn(FilterVertexActor.create(p, i),
                                     "vertex-actor-" + p + "-" + i);
                             break;
                         case "edge":
-                            context.spawn(FilterEdgeActor.create(),
+                            context.spawn(FilterEdgeActor.create(p, i),
                                     "edge-actor-" + p + "-" + i);
                             break;
                         case "property":
-                            context.spawn(FilterProjectPropertyActor.create(),
+                            context.spawn(FilterProjectPropertyActor.create(p, i),
                                     "property-actor-" + p + "-" + i);
                             break;
                     }
