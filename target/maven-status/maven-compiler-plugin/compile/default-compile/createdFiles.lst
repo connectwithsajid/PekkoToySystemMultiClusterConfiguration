@@ -3,6 +3,7 @@ com/pekko/toy/ActorPoolCoordinator$StartProcessing.class
 com/pekko/toy/actors/FilterProjectPropertyActor$ProduceProperties.class
 com/pekko/toy/actors/FilterEdgeActor$Command.class
 com/pekko/toy/actors/FilterVertexActor$Command.class
+com/pekko/toy/ActorPoolCoordinator$ProcessQuery.class
 com/pekko/toy/actors/FilterEdgeActor.class
 com/pekko/toy/actors/FilterProjectPropertyActor.class
 com/pekko/toy/MultiClusterPekkoToySystemMain.class
