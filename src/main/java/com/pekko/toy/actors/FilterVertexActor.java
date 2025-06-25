@@ -16,9 +16,12 @@ public class FilterVertexActor extends AbstractBehavior<FilterVertexActor.Comman
 
     public static class ProduceVertices implements Command {
         public final ActorRef<FilterEdgeActor.Command> edgeRouter;
+        public final ActorRef<FilterProjectPropertyActor.Command> propertyRouter;
 
-        public ProduceVertices(ActorRef<FilterEdgeActor.Command> edgeRouter) {
+        public ProduceVertices(ActorRef<FilterEdgeActor.Command> edgeRouter,
+                               ActorRef<FilterProjectPropertyActor.Command> propertyRouter) {
             this.edgeRouter = edgeRouter;
+            this.propertyRouter = propertyRouter;
         }
     }
 
@@ -43,16 +46,11 @@ public class FilterVertexActor extends AbstractBehavior<FilterVertexActor.Comman
                 .build();    }
 
     private Behavior<Command> onProduceVertices(ProduceVertices command) {
-        List<String> vertices = new ArrayList<>();
         for (int i = 1; i <= 100; i++) {
-            vertices.add("vertex_" + i);
+            String vertex = "vertex_" + i;
+            // Fixed: Use vertex variable and correct propertyRouter reference
+            command.edgeRouter.tell(new FilterEdgeActor.ProduceEdges(vertex, command.propertyRouter));
         }
-
-        // Send each vertex to edge actors
-        for (String vertex : vertices) {
-            command.edgeRouter.tell(new FilterEdgeActor.ProduceEdges(vertex));
-        }
-
         getContext().getLog().info("Produced 100 vertices");
         return this;
     }

@@ -50,24 +50,11 @@ public class FilterEdgeActor extends AbstractBehavior<FilterEdgeActor.Command> {
     }
 
     private Behavior<Command> onProduceEdges(ProduceEdges command) {
-        if (command.propertyRouter == null) {
-            getContext().getLog().error("Property router not set for edge processing");
-            return this;
-        }
-
-        List<String> edges = new ArrayList<>();
         for (int i = 1; i <= 1000; i++) {
-            edges.add(command.vertexId + "_edge_" + i);
-        }
-
-        // Send each edge to property actors
-        for (String edge : edges) {
-            command.propertyRouter.tell(
-                    new FilterProjectPropertyActor.ProduceProperties(command.vertexId, edge)
-            );
-        }
-
-        getContext().getLog().info("Produced 1000 edges for vertex {}", command.vertexId);
-        return this;
+        String edge = command.vertexId + "_edge_" + i;
+        command.propertyRouter.tell(new FilterProjectPropertyActor.ProduceProperties(command.vertexId, edge));
     }
+    getContext().getLog().info("Produced 1000 edges for vertex {}", command.vertexId);
+        return this;
+}
 }
