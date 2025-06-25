@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.pekko.toy</groupId>
+    <artifactId>multicluster-pekko-toy-system</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>Pekko Toy System Multi Cluster</name>
+    <description>A toy system using Apache Pekko with Java</description>
+
+    <properties>
+        <maven.compiler.source>24</maven.compiler.source>
+        <maven.compiler.target>24</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <pekko.management.version>1.1.1</pekko.management.version>
+        <scala.binary.version>2.13</scala.binary.version>
+        <pekko.version>1.1.3</pekko.version>
+        <junit.version>5.10.1</junit.version>
+    </properties>
+
+
+
+
+
+        <dependencies>
+            <!-- Core Pekko Dependencies -->
+            <dependency>
+                <groupId>org.apache.pekko</groupId>
+                <artifactId>pekko-actor-typed_${scala.binary.version}</artifactId>
+                <version>${pekko.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.typesafe</groupId>
+                <artifactId>config</artifactId>
+                <version>1.4.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.pekko</groupId>
+                <artifactId>pekko-cluster-typed_${scala.binary.version}</artifactId>
+                <version>${pekko.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.pekko</groupId>
+                <artifactId>pekko-cluster-sharding-typed_${scala.binary.version}</artifactId>
+                <version>${pekko.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.pekko</groupId>
+                <artifactId>pekko-discovery_${scala.binary.version}</artifactId>
+                <version>${pekko.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.pekko</groupId>
+                <artifactId>pekko-serialization-jackson_${scala.binary.version}</artifactId>
+                <version>${pekko.version}</version>
+            </dependency>
+
+            <!-- Pekko Management Dependencies - CORRECTED VERSIONS -->
+            <dependency>
+                <groupId>org.apache.pekko</groupId>
+                <artifactId>pekko-management_${scala.binary.version}</artifactId>
+                <version>${pekko.management.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.pekko</groupId>
+                <artifactId>pekko-management-cluster-bootstrap_${scala.binary.version}</artifactId>
+                <version>${pekko.management.version}</version>
+            </dependency>
+
+            <!-- Logging -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.4.14</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>2.0.9</version>
+            </dependency>
+
+            <!-- Testing -->
+            <dependency>
+                <groupId>org.apache.pekko</groupId>
+                <artifactId>pekko-actor-testkit-typed_${scala.binary.version}</artifactId>
+                <version>${pekko.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.11.0</version>
+                    <configuration>
+                        <release>11</release>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>3.1.1</version>
+                    <configuration>
+                        <mainClass>com.pekko.toy.MultiClusterPekkoToySystemMain</mainClass>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </project>
