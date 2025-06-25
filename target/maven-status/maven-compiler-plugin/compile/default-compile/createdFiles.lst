@@ -1,10 +1,14 @@
 com/pekko/toy/MultiClusterPekkoToySystemMain$RootBehavior.class
+com/pekko/toy/ActorPoolCoordinator$StartProcessing.class
+com/pekko/toy/actors/FilterProjectPropertyActor$ProduceProperties.class
 com/pekko/toy/actors/FilterEdgeActor$Command.class
 com/pekko/toy/actors/FilterVertexActor$Command.class
 com/pekko/toy/actors/FilterEdgeActor.class
 com/pekko/toy/actors/FilterProjectPropertyActor.class
 com/pekko/toy/MultiClusterPekkoToySystemMain.class
 com/pekko/toy/ActorPoolCoordinator$Command.class
+com/pekko/toy/actors/FilterEdgeActor$ProduceEdges.class
+com/pekko/toy/actors/FilterVertexActor$ProduceVertices.class
 com/pekko/toy/actors/FilterProjectPropertyActor$Command.class
 com/pekko/toy/ActorPoolCoordinator.class
 com/pekko/toy/actors/FilterVertexActor.class
