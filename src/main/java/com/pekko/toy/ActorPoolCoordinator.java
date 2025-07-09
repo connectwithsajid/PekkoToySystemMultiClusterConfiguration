@@ -55,7 +55,6 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
                                 "vertex-pool-" + poolIndex
                         ));
                         break;
-
                     case "edge":
                         edgeRouters.add(createRouterPool(
                                 FilterEdgeActor.create(poolIndex, 0),
