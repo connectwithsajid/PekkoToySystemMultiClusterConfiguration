@@ -1,0 +1,184 @@
+sajid_workspace@Sajids-MacBook-Pro PekkoToySystemMultiClusterConfigurationSplit % mvn clean compile                                                                            
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/opt/homebrew/Cellar/maven/3.9.10/libexec/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------< com.pekko.toy:multicluster-pekko-toy-system >-------------
+[INFO] Building Pekko Toy System Multi Cluster 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ multicluster-pekko-toy-system ---
+[INFO] Deleting /Users/sajid_workspace/java_projects/PekkoToySystemMultiClusterConfigurationSplit/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ multicluster-pekko-toy-system ---
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ multicluster-pekko-toy-system ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 6 source files with javac [debug release 11] to target/classes
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.556 s
+[INFO] Finished at: 2025-07-08T15:00:09-07:00
+[INFO] ------------------------------------------------------------------------
+sajid_workspace@Sajids-MacBook-Pro PekkoToySystemMultiClusterConfigurationSplit % mvn exec:java -Dexec.mainClass="com.pekko.toy.MultiClusterPekkoToySystemMain" -Dexec.args="1"
+
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/opt/homebrew/Cellar/maven/3.9.10/libexec/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------< com.pekko.toy:multicluster-pekko-toy-system >-------------
+[INFO] Building Pekko Toy System Multi Cluster 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- exec:3.1.1:java (default-cli) @ multicluster-pekko-toy-system ---
+15:00:12.788 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO org.apache.pekko.event.slf4j.Slf4jLogger -- Slf4jLogger started
+SLF4J: A number (1) of logging calls during the initialization phase have been intercepted and are
+SLF4J: now being replayed. These are subject to the filtering rules of the underlying logging system.
+SLF4J: See also https://www.slf4j.org/codes.html#replay
+15:00:12.899 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO org.apache.pekko.remote.artery.ArteryTransport -- Remoting started with transport [Artery tcp]; listening on address [pekko://PekkoToySystem@127.0.0.1:25520] with UID [-449424414812744070]
+15:00:12.903 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO org.apache.pekko.cluster.Cluster -- Cluster Node [pekko://PekkoToySystem@127.0.0.1:25520] - Starting up, Pekko version [1.1.3] ...
+15:00:12.954 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO org.apache.pekko.cluster.Cluster -- Cluster Node [pekko://PekkoToySystem@127.0.0.1:25520] - Registered cluster JMX MBean [pekko:type=Cluster]
+15:00:12.954 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO org.apache.pekko.cluster.Cluster -- Cluster Node [pekko://PekkoToySystem@127.0.0.1:25520] - Started up successfully
+15:00:12.959 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO org.apache.pekko.cluster.Cluster -- Cluster Node [pekko://PekkoToySystem@127.0.0.1:25520] - No downing-provider-class configured, manual cluster downing required, see https://pekko.apache.org/docs/pekko/current/typed/cluster.html#downing
+15:00:12.963 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO org.apache.pekko.cluster.Cluster -- Cluster Node [pekko://PekkoToySystem@127.0.0.1:25520] - Node [pekko://PekkoToySystem@127.0.0.1:25520] is JOINING itself (with roles [Primary, query-executor, dc-default], version [0.0.0]) and forming new cluster
+15:00:12.963 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO org.apache.pekko.cluster.Cluster -- Cluster Node [pekko://PekkoToySystem@127.0.0.1:25520] - is the new leader among reachable nodes (more leaders may exist)
+15:00:12.966 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO org.apache.pekko.cluster.Cluster -- Cluster Node [pekko://PekkoToySystem@127.0.0.1:25520] - Leader is moving node [pekko://PekkoToySystem@127.0.0.1:25520] to [Up]
+15:00:13.094 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.MultiClusterPekkoToySystemMain$RootBehavior -- Cluster node started with roles: [Primary, query-executor]
+15:00:13.095 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.ActorPoolCoordinator -- Created 1 pools of 3 vertex actors (3 instances each)
+15:00:13.095 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.ActorPoolCoordinator -- Created 1 pools of 5 edge actors (5 instances each)
+15:00:13.096 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterEdgeActor -- FilterEdgeActor from pool 1 instance 0 created
+15:00:13.096 [PekkoToySystem-pekko.actor.default-dispatcher-16] INFO com.pekko.toy.actors.FilterVertexActor -- FilterVertexActor from pool 1 instance 0 created
+15:00:13.096 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterEdgeActor -- FilterEdgeActor from pool 1 instance 0 created
+15:00:13.096 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterVertexActor -- FilterVertexActor from pool 1 instance 0 created
+15:00:13.096 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterVertexActor -- FilterVertexActor from pool 1 instance 0 created
+15:00:13.096 [PekkoToySystem-pekko.actor.default-dispatcher-16] INFO com.pekko.toy.actors.FilterEdgeActor -- FilterEdgeActor from pool 1 instance 0 created
+15:00:13.096 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterEdgeActor -- FilterEdgeActor from pool 1 instance 0 created
+15:00:13.096 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterEdgeActor -- FilterEdgeActor from pool 1 instance 0 created
+15:00:13.096 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.ActorPoolCoordinator -- Created 1 pools of 6 property actors (6 instances each)
+15:00:13.097 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- FilterProjectPropertyActor from pool 1 instance 0 created
+15:00:13.097 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- FilterProjectPropertyActor from pool 1 instance 0 created
+15:00:13.097 [PekkoToySystem-pekko.actor.default-dispatcher-20] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- FilterProjectPropertyActor from pool 1 instance 0 created
+15:00:13.097 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- FilterProjectPropertyActor from pool 1 instance 0 created
+15:00:13.097 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- FilterProjectPropertyActor from pool 1 instance 0 created
+15:00:13.097 [PekkoToySystem-pekko.actor.default-dispatcher-20] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- FilterProjectPropertyActor from pool 1 instance 0 created
+15:00:16.111 [PekkoToySystem-pekko.actor.default-dispatcher-15] INFO com.pekko.toy.ActorPoolCoordinator -- === DISTRIBUTED QUERY query-1 PROCESSING STARTED ===
+15:00:16.112 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterVertexActor -- Produced 100 vertices in batches of 10
+15:00:16.122 [PekkoToySystem-pekko.actor.default-dispatcher-16] INFO com.pekko.toy.actors.FilterEdgeActor -- Processed vertex batch into edge batches of 1000
+15:00:16.122 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterEdgeActor -- Processed vertex batch into edge batches of 1000
+15:00:16.125 [PekkoToySystem-pekko.actor.default-dispatcher-15] INFO com.pekko.toy.actors.FilterEdgeActor -- Processed vertex batch into edge batches of 1000
+15:00:16.127 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 10000
+15:00:16.128 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 20000
+15:00:16.130 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 30000
+15:00:16.130 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterEdgeActor -- Processed vertex batch into edge batches of 1000
+15:00:16.131 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 40000
+15:00:16.131 [PekkoToySystem-pekko.actor.default-dispatcher-20] INFO com.pekko.toy.actors.FilterEdgeActor -- Processed vertex batch into edge batches of 1000
+15:00:16.137 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 50000
+15:00:16.137 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterEdgeActor -- Processed vertex batch into edge batches of 1000
+15:00:16.138 [PekkoToySystem-pekko.actor.default-dispatcher-16] INFO com.pekko.toy.actors.FilterEdgeActor -- Processed vertex batch into edge batches of 1000
+15:00:16.138 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 60000
+15:00:16.138 [PekkoToySystem-pekko.actor.default-dispatcher-15] INFO com.pekko.toy.actors.FilterEdgeActor -- Processed vertex batch into edge batches of 1000
+15:00:16.139 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 70000
+15:00:16.140 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterEdgeActor -- Processed vertex batch into edge batches of 1000
+15:00:16.140 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 80000
+15:00:16.140 [PekkoToySystem-pekko.actor.default-dispatcher-20] INFO com.pekko.toy.actors.FilterEdgeActor -- Processed vertex batch into edge batches of 1000
+15:00:16.141 [PekkoToySystem-pekko.actor.default-dispatcher-24] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 90000
+15:00:16.142 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 100000
+15:00:16.143 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 110000
+15:00:16.143 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 120000
+15:00:16.145 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 130000
+15:00:16.150 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 140000
+15:00:16.151 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 150000
+15:00:16.153 [PekkoToySystem-pekko.actor.default-dispatcher-24] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 160000
+15:00:16.153 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 170000
+15:00:16.154 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 180000
+15:00:16.156 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 190000
+15:00:16.160 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 200000
+15:00:16.161 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 210000
+15:00:16.163 [PekkoToySystem-pekko.actor.default-dispatcher-24] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 220000
+15:00:16.164 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 230000
+15:00:16.165 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 240000
+15:00:16.166 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 250000
+15:00:16.170 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 260000
+15:00:16.171 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 270000
+15:00:16.172 [PekkoToySystem-pekko.actor.default-dispatcher-24] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 280000
+15:00:16.173 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 290000
+15:00:16.173 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 300000
+15:00:16.174 [PekkoToySystem-pekko.actor.default-dispatcher-24] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 310000
+15:00:16.177 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 320000
+15:00:16.177 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 330000
+15:00:16.177 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 340000
+15:00:16.180 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 350000
+15:00:16.180 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 360000
+15:00:16.182 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 370000
+15:00:16.183 [PekkoToySystem-pekko.actor.default-dispatcher-24] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 380000
+15:00:16.183 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 390000
+15:00:16.183 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 400000
+15:00:16.183 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 410000
+15:00:16.183 [PekkoToySystem-pekko.actor.default-dispatcher-24] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 420000
+15:00:16.183 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 430000
+15:00:16.189 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 450000
+15:00:16.189 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 460000
+15:00:16.189 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 440000
+15:00:16.189 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 470000
+15:00:16.189 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 480000
+15:00:16.189 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 490000
+15:00:16.189 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 500000
+15:00:16.190 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 510000
+15:00:16.190 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 520000
+15:00:16.190 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 540000
+15:00:16.190 [PekkoToySystem-pekko.actor.default-dispatcher-24] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 550000
+15:00:16.190 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 530000
+15:00:16.190 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 570000
+15:00:16.190 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 560000
+15:00:16.191 [PekkoToySystem-pekko.actor.default-dispatcher-24] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 590000
+15:00:16.191 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 580000
+15:00:16.191 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 600000
+15:00:16.191 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 610000
+15:00:16.191 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 620000
+15:00:16.191 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 630000
+15:00:16.191 [PekkoToySystem-pekko.actor.default-dispatcher-24] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 640000
+15:00:16.191 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 660000
+15:00:16.191 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 670000
+15:00:16.191 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 650000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 680000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 690000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 700000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 710000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 730000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 720000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 740000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 750000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 760000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 770000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 790000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 780000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 820000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 800000
+15:00:16.192 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 810000
+15:00:16.193 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 830000
+15:00:16.193 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 840000
+15:00:16.193 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 850000
+15:00:16.193 [PekkoToySystem-pekko.actor.default-dispatcher-18] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 860000
+15:00:16.193 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 870000
+15:00:16.193 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 880000
+15:00:16.193 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 900000
+15:00:16.193 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 890000
+15:00:16.193 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 910000
+15:00:16.193 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 920000
+15:00:16.193 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 930000
+15:00:16.194 [PekkoToySystem-pekko.actor.default-dispatcher-21] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 940000
+15:00:16.194 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 950000
+15:00:16.194 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 960000
+15:00:16.194 [PekkoToySystem-pekko.actor.default-dispatcher-5] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 980000
+15:00:16.194 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 970000
+15:00:16.195 [PekkoToySystem-pekko.actor.default-dispatcher-17] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 990000
+15:00:16.195 [PekkoToySystem-pekko.actor.default-dispatcher-19] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- ProjectPropertyActor from pool 1 instance 0 produced property batch (size=10000). Total system output: 1000000
+
