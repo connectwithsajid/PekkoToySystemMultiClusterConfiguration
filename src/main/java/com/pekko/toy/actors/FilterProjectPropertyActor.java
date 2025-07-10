@@ -27,17 +27,18 @@ public class FilterProjectPropertyActor extends AbstractBehavior<FilterProjectPr
     private static final String[] names = {"john", "mary", "alice", "bob", "charlie",
             "diana", "edward", "fiona", "george", "kathy"};
 
-    private final int propertyChunkSize = 10000; // You can make this configurable
+    private final int propertyChunkSize; // You can make this configurable
 
-    public static Behavior<Command> create(int poolIndex, int instanceIndex, AtomicInteger totalCount) {
-        return Behaviors.setup(context -> new FilterProjectPropertyActor(context, poolIndex, instanceIndex, totalCount));
+    public static Behavior<Command> create(int poolIndex, int instanceIndex,int propertyChunkSize, AtomicInteger totalCount) {
+        return Behaviors.setup(context -> new FilterProjectPropertyActor(context, poolIndex, instanceIndex, propertyChunkSize, totalCount));
     }
 
-    private FilterProjectPropertyActor(ActorContext<Command> context, int poolIndex, int instanceIndex, AtomicInteger totalCount) {
+    private FilterProjectPropertyActor(ActorContext<Command> context, int poolIndex, int instanceIndex,int propertyChunkSize, AtomicInteger totalCount) {
         super(context);
         this.poolIndex = poolIndex;
         this.instanceIndex = instanceIndex;
         this.totalCount = totalCount;
+        this.propertyChunkSize = propertyChunkSize;
         context.getLog().info("FilterProjectPropertyActor created at path {}", context.getSelf().path());
 //        context.getLog().info("FilterProjectPropertyActor from pool {} instance {} created", poolIndex, instanceIndex);
     }

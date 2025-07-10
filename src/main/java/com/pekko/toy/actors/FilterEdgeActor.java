@@ -32,16 +32,18 @@ public class FilterEdgeActor extends AbstractBehavior<FilterEdgeActor.Command> {
 
     private final int poolIndex;
     private final int instanceIndex;
-    private final int edgeChunkSize = 10; // Or make configurable
+    private final int edgeChunkSize; // Or make configurable
 
-    public static Behavior<Command> create(int poolIndex, int instanceIndex) {
-        return Behaviors.setup(context -> new FilterEdgeActor(context, poolIndex, instanceIndex));
+    public static Behavior<Command> create(int poolIndex, int instanceIndex, int edgeChunkSize) {
+        return Behaviors.setup(context -> new FilterEdgeActor(context, poolIndex, instanceIndex, edgeChunkSize));
     }
 
-    private FilterEdgeActor(ActorContext<Command> context, int poolIndex, int instanceIndex) {
+    private FilterEdgeActor(ActorContext<Command> context, int poolIndex, int instanceIndex, int edgeChunkSize) {
         super(context);
         this.poolIndex = poolIndex;
         this.instanceIndex = instanceIndex;
+        this.edgeChunkSize = edgeChunkSize;
+
         context.getLog().info("FilterEdgeActor created at path {}", context.getSelf().path());
 
 //        context.getLog().info("FilterEdgeActor from pool {} instance {} created", poolIndex, instanceIndex);

@@ -8,11 +8,28 @@ import com.typesafe.config.ConfigFactory;
 
 public class MultiClusterPekkoToySystemMain {
 
-    public static void main(String[] args) {
-        String clusterId = (args.length > 0) ? args[0] : "1";
-        Config config = ConfigFactory.load("cluster" + clusterId + ".conf");
+//    public static void main(String[] args) {
+//        String clusterId = (args.length > 0) ? args[0] : "1";
+//        Config config = ConfigFactory.load("cluster" + clusterId + ".conf");
+//
+//        ActorSystem.create(RootBehavior.create(), "PekkoToySystem", config);
+//    }
 
-        ActorSystem.create(RootBehavior.create(), "PekkoToySystem", config);
+    public static void main(String[] args) {
+        String configFile = (args.length > 0) ? args[0] : "application.conf";
+        String clusterName = (args.length > 1) ? args[1] : "cluster1";
+
+        // Load the application config file
+        Config baseConfig = ConfigFactory.load(configFile);
+
+        // Extract the cluster-specific config
+        Config clusterConfig = baseConfig.getConfig("clusters." + clusterName);
+
+        // Merge with base config so global settings are available
+        Config mergedConfig = clusterConfig.withFallback(baseConfig);
+
+        // Start the ActorSystem with the merged config
+        ActorSystem.create(RootBehavior.create(), "PekkoToySystem", mergedConfig);
     }
 
     public static class RootBehavior {

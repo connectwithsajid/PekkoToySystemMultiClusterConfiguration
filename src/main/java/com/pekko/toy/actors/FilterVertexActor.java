@@ -35,16 +35,18 @@ public class FilterVertexActor extends AbstractBehavior<FilterVertexActor.Comman
 
     private final int poolIndex;
     private final int instanceIndex;
-    private final int vertexChunkSize = 10; // Or make configurable
+    private final int vertexChunkSize ;// Or make configurable
 
-    public static Behavior<Command> create(int poolIndex, int instanceIndex) {
-        return Behaviors.setup(context -> new FilterVertexActor(context, poolIndex, instanceIndex));
+    public static Behavior<Command> create(int poolIndex, int instanceIndex, int vertexChunkSize) {
+        return Behaviors.setup(context -> new FilterVertexActor(context, poolIndex, instanceIndex, vertexChunkSize));
     }
 
-    private FilterVertexActor(ActorContext<Command> context, int poolIndex, int instanceIndex) {
+    private FilterVertexActor(ActorContext<Command> context, int poolIndex, int instanceIndex, int vertexChunkSize) {
         super(context);
         this.poolIndex = poolIndex;
         this.instanceIndex = instanceIndex;
+        this.vertexChunkSize = vertexChunkSize;
+
         context.getLog().info("FilterVertexActor created at path {}", context.getSelf().path());
 
 //        context.getLog().info("FilterVertexActor from pool {} instance {} created", poolIndex, instanceIndex);

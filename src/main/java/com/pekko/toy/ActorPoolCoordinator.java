@@ -34,7 +34,15 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
     private final Config config;
 
 
-
+    private int getChunkSize(Config config, String actorType) {
+        List<? extends Config> pools = config.getConfigList("pekko.toy-system.actor-pools");
+        for (Config pool : pools) {
+            if (pool.getString("type").equals(actorType)) {
+                return pool.getInt("chunk-size");
+            }
+        }
+        throw new IllegalArgumentException("No chunk-size for actor type: " + actorType);
+    }
     public ActorPoolCoordinator(ActorContext<Command> context, Config config) {
         super(context);
         this.context = context;
@@ -45,7 +53,9 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
 
     private void createActorPools() {
         List<? extends Config> pools = config.getConfigList("pekko.toy-system.actor-pools");
-
+        int vertexChunkSize = getChunkSize(config, "vertex");
+        int edgeChunkSize = getChunkSize(config, "edge");
+        int propertyChunkSize = getChunkSize(config, "property");
         for (Config poolConfig : pools) {
             String type = poolConfig.getString("type");
             int instances = poolConfig.getInt("instances");
@@ -55,7 +65,7 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
                 switch (type) {
                     case "vertex":
                         vertexRouters.add(createRouterPool(
-                                FilterVertexActor.create(poolIndex, 0),
+                                FilterVertexActor.create(poolIndex, 0,vertexChunkSize),
                                 instances,
                                 "vertex-pool-" + poolIndex
                         ));
@@ -63,7 +73,7 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
 
                     case "edge":
                         edgeRouters.add(createRouterPool(
-                                FilterEdgeActor.create(poolIndex, 0),
+                                FilterEdgeActor.create(poolIndex, 0,edgeChunkSize),
                                 instances,
                                 "edge-pool-" + poolIndex
                         ));
@@ -71,7 +81,7 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
 
                     case "property":
                         propertyRouters.add(createRouterPool(
-                                FilterProjectPropertyActor.create(poolIndex, 0, totalCount),
+                                FilterProjectPropertyActor.create(poolIndex, 0,propertyChunkSize, totalCount),
                                 instances,
                                 "property-pool-" + poolIndex
                         ));
