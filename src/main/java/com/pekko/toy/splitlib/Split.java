@@ -1,35 +1,61 @@
 package com.pekko.toy.splitlib;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class Split<T> {
-    private final int chunkSize;
-    private final Consumer<List<T>> batchConsumer;
-    private final List<T> buffer;
+public class Split {
+    private int batchSize;
+    private int numEltsInPkt;
+    private ObjectNode templateMetadata;
+    private ObjectNode outgoingPkt;
+    private ArrayNode dataArray;
+    private final ObjectMapper mapper = new ObjectMapper();
+    private java.util.function.Consumer<ObjectNode> batchConsumer;
 
-    public Split(int chunkSize, Consumer<List<T>> batchConsumer) {
-        this.chunkSize = chunkSize;
+    public void initialize(ObjectNode networkPacket, int batchSize, java.util.function.Consumer<ObjectNode> batchConsumer) {
+        this.batchSize = batchSize;
+        this.numEltsInPkt = 0;
         this.batchConsumer = batchConsumer;
-        this.buffer = new ArrayList<>(chunkSize);
+
+        JsonNode metadataNode = networkPacket.get("metadata");
+        System.out.println("Metadata: " + metadataNode);
+
+        if (metadataNode == null || !metadataNode.isObject()) {
+            throw new IllegalArgumentException("networkPacket must have a 'metadata' ObjectNode");
+        }
+
+        this.templateMetadata = (ObjectNode) metadataNode.deepCopy();
+
+        this.dataArray = mapper.createArrayNode();
+        this.outgoingPkt = mapper.createObjectNode();
+        this.outgoingPkt.set("metadata", templateMetadata.deepCopy());
+        this.outgoingPkt.set("data", dataArray);
+
+
+
     }
 
-    public void send(T item) {
-        buffer.add(item);
-        if (buffer.size() == chunkSize) {
-            flush();
+    public void send(JsonNode streamElt) {
+        dataArray.add(streamElt);
+        numEltsInPkt++;
+        if (numEltsInPkt == batchSize) {
+//            batchConsumer.accept(outgoingPkt);
+            batchConsumer.accept(outgoingPkt.deepCopy());
+            System.out.println("outgoingPkt" + outgoingPkt.deepCopy());
+            this.dataArray = mapper.createArrayNode();
+            this.outgoingPkt = mapper.createObjectNode();
+            this.outgoingPkt.set("metadata", templateMetadata.deepCopy());
+            this.outgoingPkt.set("data", dataArray);
+            numEltsInPkt = 0;
         }
     }
 
     public void close() {
-        if (!buffer.isEmpty()) {
-            flush();
+        if (numEltsInPkt > 0) {
+            batchConsumer.accept(outgoingPkt.deepCopy());
+            System.out.println("outgoingPkt" + outgoingPkt.deepCopy());
         }
-    }
-
-    private void flush() {
-        batchConsumer.accept(new ArrayList<>(buffer));
-        buffer.clear();
     }
 }

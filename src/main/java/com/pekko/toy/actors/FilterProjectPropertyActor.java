@@ -3,44 +3,40 @@ package com.pekko.toy.actors;
 import org.apache.pekko.actor.typed.Behavior;
 import org.apache.pekko.actor.typed.javadsl.*;
 import com.pekko.toy.splitlib.Split;
-import java.util.List;
-import java.util.ArrayList;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class FilterProjectPropertyActor extends AbstractBehavior<FilterProjectPropertyActor.Command> {
 
     public interface Command {}
 
-    // Batch message from EdgeActor
     public static class ProcessEdgeBatch implements Command {
-        public final List<String> edges;
+        public final ObjectNode packet;
 
-        public ProcessEdgeBatch(List<String> edges) {
-            this.edges = edges;
+        public ProcessEdgeBatch(ObjectNode packet) {
+            this.packet = packet;
         }
     }
 
-    private final int poolIndex;
-    private final int instanceIndex;
     private int instanceCount = 0;
     private final AtomicInteger totalCount;
-    private static final String[] names = {"john", "mary", "alice", "bob", "charlie",
-            "diana", "edward", "fiona", "george", "kathy"};
+    private static final String[] names = {"john", "mary"};
+//    private static final String[] names = {"john", "mary", "alice", "bob", "charlie",
+//            "diana", "edward", "fiona", "george", "kathy"};
+    private final int propertyChunkSize;
 
-    private final int propertyChunkSize; // You can make this configurable
-
-    public static Behavior<Command> create(int poolIndex, int instanceIndex,int propertyChunkSize, AtomicInteger totalCount) {
-        return Behaviors.setup(context -> new FilterProjectPropertyActor(context, poolIndex, instanceIndex, propertyChunkSize, totalCount));
+    public static Behavior<Command> create(int propertyChunkSize, AtomicInteger totalCount) {
+        return Behaviors.setup(context -> new FilterProjectPropertyActor(context, propertyChunkSize, totalCount));
     }
 
-    private FilterProjectPropertyActor(ActorContext<Command> context, int poolIndex, int instanceIndex,int propertyChunkSize, AtomicInteger totalCount) {
+    private FilterProjectPropertyActor(ActorContext<Command> context, int propertyChunkSize, AtomicInteger totalCount) {
         super(context);
-        this.poolIndex = poolIndex;
-        this.instanceIndex = instanceIndex;
         this.totalCount = totalCount;
         this.propertyChunkSize = propertyChunkSize;
         context.getLog().info("FilterProjectPropertyActor created at path {}", context.getSelf().path());
-//        context.getLog().info("FilterProjectPropertyActor from pool {} instance {} created", poolIndex, instanceIndex);
     }
 
     @Override
@@ -51,46 +47,42 @@ public class FilterProjectPropertyActor extends AbstractBehavior<FilterProjectPr
     }
 
     private Behavior<Command> onProcessEdgeBatch(ProcessEdgeBatch command) {
-        Split<String> split = new Split<>(propertyChunkSize, batch -> {
-            instanceCount += batch.size();
-            int currentTotal = totalCount.addAndGet(batch.size());
+        ObjectNode packet = command.packet;
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayNode edges = (ArrayNode) packet.get("data");
+        ObjectNode metadata = packet.get("metadata").deepCopy();
+        metadata.put("packetType", "property");
+
+        ObjectNode networkPacket = mapper.createObjectNode();
+        networkPacket.set("metadata", metadata);
+        networkPacket.set("data", mapper.createArrayNode());
+
+        Split split = new Split();
+        split.initialize(networkPacket, propertyChunkSize, batchPacket -> {
+            ArrayNode batchData = (ArrayNode) batchPacket.get("data");
+            int batchSize = batchData.size();
+            instanceCount += batchSize;
+            int currentTotal = totalCount.addAndGet(batchSize);
 
             getContext().getLog().info(
                     "{} created {} properties (batch size). Total system output: {}",
-                    getContext().getSelf().path(), batch.size(), currentTotal
+                    getContext().getSelf().path(), batchSize, currentTotal
             );
-
         });
 
-        for (String edge : command.edges) {
+        for (JsonNode edge : edges) {
+            String edgeId = edge.get("EdgeId").asText();
             for (String name : names) {
-                String property = edge + "_" + name;
-                split.send(property);
+                ObjectNode propertyObj = mapper.createObjectNode().put("PropertyId", edgeId + "_" + name);
+                split.send(propertyObj);
             }
         }
         split.close();
+
         getContext().getLog().info(
                 "{} finished processing edge batch. Instance has produced {} properties so far.",
                 getContext().getSelf().path(), instanceCount
         );
         return this;
     }
-
-
-//    private Behavior<Command> onProcessEdgeBatch(ProcessEdgeBatch command) {
-//        for (String edge : command.edges) {
-//            for (String name : names) {
-//                String property = edge + "_" + name;
-//                propertyBuffer.add(property);
-//                bufferedCount++;
-//
-//                if (propertyBuffer.size() == propertyChunkSize) {
-//                    flushPropertyBuffer();
-//                }
-//            }
-//        }
-//        // Optionally: flush remaining properties at shutdown or after all work is done
-//        return this;
-//    }
-
 }

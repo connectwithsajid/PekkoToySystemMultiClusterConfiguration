@@ -4,53 +4,48 @@ import org.apache.pekko.actor.typed.Behavior;
 import org.apache.pekko.actor.typed.javadsl.*;
 import org.apache.pekko.actor.typed.ActorRef;
 import com.pekko.toy.splitlib.Split;
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class FilterVertexActor extends AbstractBehavior<FilterVertexActor.Command> {
 
     public interface Command {}
 
     public static class ProduceVertices implements Command {
+        public final ObjectNode packet;
         public final ActorRef<FilterEdgeActor.Command> edgeRouter;
         public final ActorRef<FilterProjectPropertyActor.Command> propertyRouter;
 
-        public ProduceVertices(ActorRef<FilterEdgeActor.Command> edgeRouter,
+        public ProduceVertices(ObjectNode packet,
+                               ActorRef<FilterEdgeActor.Command> edgeRouter,
                                ActorRef<FilterProjectPropertyActor.Command> propertyRouter) {
+            this.packet = packet;
             this.edgeRouter = edgeRouter;
             this.propertyRouter = propertyRouter;
         }
     }
 
-    // Batch message for EdgeActor
     public static class ProcessVertexBatch implements FilterEdgeActor.Command {
-        public final List<String> vertices;
+        public final ObjectNode packet;
         public final ActorRef<FilterProjectPropertyActor.Command> propertyRouter;
 
-        public ProcessVertexBatch(List<String> vertices, ActorRef<FilterProjectPropertyActor.Command> propertyRouter) {
-            this.vertices = vertices;
+        public ProcessVertexBatch(ObjectNode packet, ActorRef<FilterProjectPropertyActor.Command> propertyRouter) {
+            this.packet = packet;
             this.propertyRouter = propertyRouter;
         }
     }
 
-    private final int poolIndex;
-    private final int instanceIndex;
-    private final int vertexChunkSize ;// Or make configurable
+    private final int vertexChunkSize;
 
-    public static Behavior<Command> create(int poolIndex, int instanceIndex, int vertexChunkSize) {
-        return Behaviors.setup(context -> new FilterVertexActor(context, poolIndex, instanceIndex, vertexChunkSize));
+    public static Behavior<Command> create(int vertexChunkSize) {
+        return Behaviors.setup(context -> new FilterVertexActor(context, vertexChunkSize));
     }
 
-    private FilterVertexActor(ActorContext<Command> context, int poolIndex, int instanceIndex, int vertexChunkSize) {
+    private FilterVertexActor(ActorContext<Command> context, int vertexChunkSize) {
         super(context);
-        this.poolIndex = poolIndex;
-        this.instanceIndex = instanceIndex;
         this.vertexChunkSize = vertexChunkSize;
-
         context.getLog().info("FilterVertexActor created at path {}", context.getSelf().path());
-
-//        context.getLog().info("FilterVertexActor from pool {} instance {} created", poolIndex, instanceIndex);
-
     }
 
     @Override
@@ -60,24 +55,25 @@ public class FilterVertexActor extends AbstractBehavior<FilterVertexActor.Comman
                 .build();
     }
 
-
-
     private Behavior<Command> onProduceVertices(ProduceVertices command) {
-        List<String> vertices = new ArrayList<>();
-        for (int i = 1; i <= 100; i++) {
-            vertices.add("vertex_" + i);
-        }
+        ObjectNode inputPacket = command.packet;
+        ObjectMapper mapper = new ObjectMapper();
 
-        Split<String> split = new Split<>(vertexChunkSize, batch -> {
-            command.edgeRouter.tell(new FilterEdgeActor.ProcessVertexBatch(batch, command.propertyRouter));
+        Split split = new Split();
+        split.initialize(inputPacket, vertexChunkSize, batchPacket -> {
+            command.edgeRouter.tell(new FilterEdgeActor.ProcessVertexBatch(batchPacket, command.propertyRouter));
         });
 
-        for (String vertex : vertices) {
-            split.send(vertex);
+        for (int i = 1; i <= 7; i++) {
+            ObjectNode vertexObj = mapper.createObjectNode()
+                    .put("Vid", i);
+//                    .put("Count", i * 2)
+//                    .put("Name", "Name_" + i);
+            split.send(vertexObj);
         }
         split.close();
 
-        getContext().getLog().info("Produced {} vertices in batches of {}", vertices.size(), vertexChunkSize);
+        getContext().getLog().info("Produced 100 vertices in batches of {}", vertexChunkSize);
         return this;
     }
 }

@@ -3,12 +3,14 @@ package com.pekko.toy;
 import org.apache.pekko.actor.typed.*;
 import org.apache.pekko.actor.typed.javadsl.*;
 import com.pekko.toy.actors.*;
-import com.typesafe.config.Config;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.apache.pekko.routing.SmallestMailboxRoutingLogic;
+import com.typesafe.config.Config;
 
 public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.Command> {
 
@@ -26,6 +28,14 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
     private final List<ActorRef<FilterEdgeActor.Command>> edgeRouters = new ArrayList<>();
     private final List<ActorRef<FilterProjectPropertyActor.Command>> propertyRouters = new ArrayList<>();
 
+//    private final int vertexChunkSize = 10;
+//    private final int edgeChunkSize = 20;
+//    private final int propertyChunkSize = 30;
+
+    private final int vertexChunkSize;
+    private final int edgeChunkSize;
+    private final int propertyChunkSize;
+
     public static Behavior<Command> create(Config config) {
         return Behaviors.setup(context -> new ActorPoolCoordinator(context, config));
     }
@@ -34,7 +44,7 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
     private final Config config;
 
 
-    private int getChunkSize(Config config, String actorType) {
+    public static int getChunkSize(Config config, String actorType) {
         List<? extends Config> pools = config.getConfigList("pekko.toy-system.actor-pools");
         for (Config pool : pools) {
             if (pool.getString("type").equals(actorType)) {
@@ -43,65 +53,33 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
         }
         throw new IllegalArgumentException("No chunk-size for actor type: " + actorType);
     }
+
+
+
+
     public ActorPoolCoordinator(ActorContext<Command> context, Config config) {
         super(context);
         this.context = context;
         this.config = config;
+
+        // Fetch chunk sizes from config first
+        this.vertexChunkSize = getChunkSize(config, "vertex");
+        this.edgeChunkSize = getChunkSize(config, "edge");
+        this.propertyChunkSize = getChunkSize(config, "property");
+
         createActorPools();
         setupActorCommunication();
     }
 
     private void createActorPools() {
-        List<? extends Config> pools = config.getConfigList("pekko.toy-system.actor-pools");
-        int vertexChunkSize = getChunkSize(config, "vertex");
-        int edgeChunkSize = getChunkSize(config, "edge");
-        int propertyChunkSize = getChunkSize(config, "property");
-        for (Config poolConfig : pools) {
-            String type = poolConfig.getString("type");
-            int instances = poolConfig.getInt("instances");
-            int poolCount = poolConfig.hasPath("pools") ? poolConfig.getInt("pools") : 1;
-
-            for (int poolIndex = 1; poolIndex <= poolCount; poolIndex++) {
-                switch (type) {
-                    case "vertex":
-                        vertexRouters.add(createRouterPool(
-                                FilterVertexActor.create(poolIndex, 0,vertexChunkSize),
-                                instances,
-                                "vertex-pool-" + poolIndex
-                        ));
-                        break;
-
-                    case "edge":
-                        edgeRouters.add(createRouterPool(
-                                FilterEdgeActor.create(poolIndex, 0,edgeChunkSize),
-                                instances,
-                                "edge-pool-" + poolIndex
-                        ));
-                        break;
-
-                    case "property":
-                        propertyRouters.add(createRouterPool(
-                                FilterProjectPropertyActor.create(poolIndex, 0,propertyChunkSize, totalCount),
-                                instances,
-                                "property-pool-" + poolIndex
-                        ));
-                        break;
-                }
-            }
-
-            getContext().getLog().info("Created {} pools of {} {} actors ({} instances each)",
-                    poolCount, instances, type, instances);
-        }
-    }
-
-    private <T> ActorRef<T> createRouterPool(Behavior<T> behavior, int instances, String name) {
-        PoolRouter<T> pool = Routers.pool(instances, behavior).withRoundRobinRouting();
-        return getContext().spawn(pool, name);
+        vertexRouters.add(getContext().spawn(FilterVertexActor.create(vertexChunkSize), "vertex-router"));
+        edgeRouters.add(getContext().spawn(FilterEdgeActor.create(edgeChunkSize), "edge-router"));
+        propertyRouters.add(getContext().spawn(FilterProjectPropertyActor.create(propertyChunkSize, totalCount), "property-router"));
     }
 
     private void setupActorCommunication() {
         getContext().scheduleOnce(
-                Duration.ofSeconds(3),
+                Duration.ofSeconds(1),
                 getContext().getSelf(),
                 new StartProcessing()
         );
@@ -116,12 +94,8 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
     }
 
     private Behavior<Command> onStartProcessing(StartProcessing command) {
-        // Start multiple queries
         totalCount.set(0);
-
-        for (int i = 1; i <= 1; i++) {
-            getContext().getSelf().tell(new ProcessQuery("query-" + i));
-        }
+        getContext().getSelf().tell(new ProcessQuery("query-1"));
         return this;
     }
 
@@ -131,13 +105,32 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
     }
 
     private void processDistributed(String queryId) {
-        // Randomly select routers
         ActorRef<FilterVertexActor.Command> vertexRouter = getRandomRouter(vertexRouters);
         ActorRef<FilterEdgeActor.Command> edgeRouter = getRandomRouter(edgeRouters);
         ActorRef<FilterProjectPropertyActor.Command> propertyRouter = getRandomRouter(propertyRouters);
 
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode schema = mapper.createObjectNode()
+                .put("Vid", "long")
+                .put("Count", "int")
+                .put("Name", "string");
+        ObjectNode metadata =  mapper.createObjectNode();
+        metadata.set("schema", schema);
+        metadata.put("sortAttribute", "Vid");
+        metadata.put("queryId", queryId);
+        metadata.put("source", "coordinator");
+        metadata.put("timestamp", System.currentTimeMillis());
+        metadata.put("packetType", "vertex");
+
+        ArrayNode data = mapper.createArrayNode();
+
+        ObjectNode networkPacket = mapper.createObjectNode();
+        networkPacket.set("metadata", metadata);
+        networkPacket.set("data", data);
+
         if (vertexRouter != null && edgeRouter != null && propertyRouter != null) {
             vertexRouter.tell(new FilterVertexActor.ProduceVertices(
+                    networkPacket,
                     edgeRouter,
                     propertyRouter
             ));
@@ -151,7 +144,4 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
         if (routers.isEmpty()) return null;
         return routers.get(ThreadLocalRandom.current().nextInt(routers.size()));
     }
-
-
-
 }
