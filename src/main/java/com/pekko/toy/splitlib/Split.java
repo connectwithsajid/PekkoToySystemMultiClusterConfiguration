@@ -61,7 +61,7 @@ public class Split {
         // Set or update next operator ID
         ObjectNode metadataToUse = (ObjectNode) batchToSend.get("metadata");
         metadataToUse.put("nextOperator", this.nextOperator);
-        // todo: Check testing
+        //  Check testing
         batchConsumer.accept(batchToSend);
     }
 
@@ -73,7 +73,7 @@ public class Split {
 
     private ObjectNode createOutgoingPacket() {
         ObjectNode newPacket = mapper.createObjectNode();
-        //todo: redundant copy
+        // redundant copy
         newPacket.set("metadata", templateMetadata.deepCopy());
         newPacket.set("data", dataArray);
         return newPacket;

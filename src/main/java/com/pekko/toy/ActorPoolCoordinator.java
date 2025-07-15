@@ -106,7 +106,7 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
                 .put("Count", "int")
                 .put("Name", "string");
 
-        //todo: Change this to JSON Object
+        // Change this to JSON Object
         ObjectNode metadata =  mapper.createObjectNode();
         metadata.set("schema", schema);
         metadata.put("sortAttribute", "Vid");
