@@ -15,23 +15,17 @@ import com.typesafe.config.Config;
 public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.Command> {
 
     public interface Command {}
+
     public static class StartProcessing implements Command {}
     public static class ProcessQuery implements Command {
         public final String queryId;
-        public ProcessQuery(String queryId) {
-            this.queryId = queryId;
-        }
+        public ProcessQuery(String queryId) { this.queryId = queryId; }
     }
-    private final AtomicInteger totalCount = new AtomicInteger(0);
 
+    private final AtomicInteger totalCount = new AtomicInteger(0);
     private final List<ActorRef<FilterVertexActor.Command>> vertexRouters = new ArrayList<>();
     private final List<ActorRef<FilterEdgeActor.Command>> edgeRouters = new ArrayList<>();
     private final List<ActorRef<FilterProjectPropertyActor.Command>> propertyRouters = new ArrayList<>();
-
-//    private final int vertexChunkSize = 10;
-//    private final int edgeChunkSize = 20;
-//    private final int propertyChunkSize = 30;
-
     private final int vertexChunkSize;
     private final int edgeChunkSize;
     private final int propertyChunkSize;
@@ -43,7 +37,6 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
     private final ActorContext<Command> context;
     private final Config config;
 
-
     public static int getChunkSize(Config config, String actorType) {
         List<? extends Config> pools = config.getConfigList("pekko.toy-system.actor-pools");
         for (Config pool : pools) {
@@ -54,15 +47,11 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
         throw new IllegalArgumentException("No chunk-size for actor type: " + actorType);
     }
 
-
-
-
     public ActorPoolCoordinator(ActorContext<Command> context, Config config) {
         super(context);
         this.context = context;
         this.config = config;
 
-        // Fetch chunk sizes from config first
         this.vertexChunkSize = getChunkSize(config, "vertex");
         this.edgeChunkSize = getChunkSize(config, "edge");
         this.propertyChunkSize = getChunkSize(config, "property");
@@ -72,15 +61,15 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
     }
 
     private void createActorPools() {
-        vertexRouters.add(getContext().spawn(FilterVertexActor.create(vertexChunkSize), "vertex-router"));
-        edgeRouters.add(getContext().spawn(FilterEdgeActor.create(edgeChunkSize), "edge-router"));
-        propertyRouters.add(getContext().spawn(FilterProjectPropertyActor.create(propertyChunkSize, totalCount), "property-router"));
+        vertexRouters.add(context.spawn(FilterVertexActor.create(vertexChunkSize), "vertex-router"));
+        edgeRouters.add(context.spawn(FilterEdgeActor.create(edgeChunkSize), "edge-router"));
+        propertyRouters.add(context.spawn(FilterProjectPropertyActor.create(propertyChunkSize, totalCount), "property-router"));
     }
 
     private void setupActorCommunication() {
-        getContext().scheduleOnce(
+        context.scheduleOnce(
                 Duration.ofSeconds(1),
-                getContext().getSelf(),
+                context.getSelf(),
                 new StartProcessing()
         );
     }
@@ -95,16 +84,18 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
 
     private Behavior<Command> onStartProcessing(StartProcessing command) {
         totalCount.set(0);
-        getContext().getSelf().tell(new ProcessQuery("query-1"));
+
+        // Here you could parse or generate the network packet from JSON or config
+        context.getSelf().tell(new ProcessQuery("query-1"));
         return this;
     }
 
     private Behavior<Command> onProcessQuery(ProcessQuery command) {
-        processDistributed(command.queryId);
+        buildAndSendInitialPacket(command.queryId);
         return this;
     }
 
-    private void processDistributed(String queryId) {
+    private void buildAndSendInitialPacket(String queryId) {
         ActorRef<FilterVertexActor.Command> vertexRouter = getRandomRouter(vertexRouters);
         ActorRef<FilterEdgeActor.Command> edgeRouter = getRandomRouter(edgeRouters);
         ActorRef<FilterProjectPropertyActor.Command> propertyRouter = getRandomRouter(propertyRouters);
@@ -114,6 +105,8 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
                 .put("Vid", "long")
                 .put("Count", "int")
                 .put("Name", "string");
+
+        //todo: Change this to JSON Object
         ObjectNode metadata =  mapper.createObjectNode();
         metadata.set("schema", schema);
         metadata.put("sortAttribute", "Vid");
@@ -121,6 +114,7 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
         metadata.put("source", "coordinator");
         metadata.put("timestamp", System.currentTimeMillis());
         metadata.put("packetType", "vertex");
+        // NOTE: No nextOperator yet for initial packet
 
         ArrayNode data = mapper.createArrayNode();
 
@@ -134,9 +128,9 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
                     edgeRouter,
                     propertyRouter
             ));
-            getContext().getLog().info("=== DISTRIBUTED QUERY {} PROCESSING STARTED ===", queryId);
+            context.getLog().info("=== DISTRIBUTED QUERY {} PROCESSING STARTED ===", queryId);
         } else {
-            getContext().getLog().warn("One or more router pools are empty");
+            context.getLog().warn("One or more router pools are empty");
         }
     }
 

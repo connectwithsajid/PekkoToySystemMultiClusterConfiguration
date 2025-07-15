@@ -1,13 +1,13 @@
 package com.pekko.toy.actors;
 
-import org.apache.pekko.actor.typed.Behavior;
-import org.apache.pekko.actor.typed.javadsl.*;
-import org.apache.pekko.actor.typed.ActorRef;
-import com.pekko.toy.splitlib.Split;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.pekko.toy.splitlib.Split;
+import org.apache.pekko.actor.typed.Behavior;
+import org.apache.pekko.actor.typed.ActorRef;
+import org.apache.pekko.actor.typed.javadsl.*;
 
 public class FilterEdgeActor extends AbstractBehavior<FilterEdgeActor.Command> {
 
@@ -23,60 +23,44 @@ public class FilterEdgeActor extends AbstractBehavior<FilterEdgeActor.Command> {
         }
     }
 
-    public static class ProcessEdgeBatch implements FilterProjectPropertyActor.Command {
-        public final ObjectNode packet;
-
-        public ProcessEdgeBatch(ObjectNode packet) {
-            this.packet = packet;
-        }
+    public static Behavior<Command> create(int chunkSize) {
+        return Behaviors.setup(ctx -> new FilterEdgeActor(ctx, chunkSize));
     }
 
     private final int edgeChunkSize;
 
-    public static Behavior<Command> create(int edgeChunkSize) {
-        return Behaviors.setup(context -> new FilterEdgeActor(context, edgeChunkSize));
-    }
-
-    private FilterEdgeActor(ActorContext<Command> context, int edgeChunkSize) {
-        super(context);
-        this.edgeChunkSize = edgeChunkSize;
-        context.getLog().info("FilterEdgeActor created at path {}", context.getSelf().path());
+    public FilterEdgeActor(ActorContext<Command> ctx, int chunkSize) {
+        super(ctx);
+        this.edgeChunkSize = chunkSize;
     }
 
     @Override
     public Receive<Command> createReceive() {
         return newReceiveBuilder()
-                .onMessage(ProcessVertexBatch.class, this::onProcessVertexBatch)
+                .onMessage(ProcessVertexBatch.class, this::onVertexBatch)
                 .build();
     }
 
-    private Behavior<Command> onProcessVertexBatch(ProcessVertexBatch command) {
-        ObjectNode packet = command.packet;
+    private Behavior<Command> onVertexBatch(ProcessVertexBatch msg) {
+        ObjectNode networkPacket = msg.packet;
         ObjectMapper mapper = new ObjectMapper();
-        ArrayNode vertices = (ArrayNode) packet.get("data");
-        ObjectNode metadata = packet.get("metadata").deepCopy();
-        metadata.put("packetType", "edge");
 
-        ObjectNode networkPacket = mapper.createObjectNode();
-        networkPacket.set("metadata", metadata);
-        networkPacket.set("data", mapper.createArrayNode());
+        ArrayNode vertices = (ArrayNode) networkPacket.get("data");
 
         Split split = new Split();
-        split.initialize(networkPacket, edgeChunkSize, batchPacket -> {
-            command.propertyRouter.tell(new FilterProjectPropertyActor.ProcessEdgeBatch(batchPacket));
+        split.initialize(networkPacket, edgeChunkSize, "PropertyActor", batch -> {
+            msg.propertyRouter.tell(new FilterProjectPropertyActor.ProcessEdgeBatch(batch));
         });
 
         for (JsonNode vertex : vertices) {
             long vid = vertex.get("Vid").asLong();
-            for (int i = 1; i <= 6; i++) {
-                ObjectNode edgeObj = mapper.createObjectNode()
-                        .put("EdgeId", vid + "_edge_" + i);
-                split.send(edgeObj);
+            for (int i = 1; i <= 4; i++) {
+                ObjectNode edge = mapper.createObjectNode().put("EdgeId", "E_" + vid + "_" + i);
+                split.send(edge);
             }
         }
-        split.close();
 
-        getContext().getLog().info("Processed vertex batch into edge batches of {}", edgeChunkSize);
+        split.close();
         return this;
     }
 }
