@@ -1,11 +1,9 @@
 com/pekko/toy/MultiClusterPekkoToySystemMain$RootBehavior.class
 com/pekko/toy/ActorPoolCoordinator$StartProcessing.class
 com/pekko/toy/actors/FilterProjectPropertyActor$ProcessEdgeBatch.class
-com/pekko/toy/actors/FilterVertexActor$ProcessVertexBatch.class
 com/pekko/toy/actors/FilterEdgeActor$Command.class
 com/pekko/toy/actors/FilterVertexActor$Command.class
 com/pekko/toy/actors/FilterEdgeActor$ProcessVertexBatch.class
-com/pekko/toy/actors/FilterEdgeActor$ProcessEdgeBatch.class
 com/pekko/toy/splitlib/Split.class
 com/pekko/toy/ActorPoolCoordinator$ProcessQuery.class
 com/pekko/toy/actors/FilterEdgeActor.class

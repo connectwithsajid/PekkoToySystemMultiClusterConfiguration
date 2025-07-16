@@ -10,9 +10,12 @@ import org.apache.pekko.actor.typed.javadsl.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+
 public class FilterProjectPropertyActor extends AbstractBehavior<FilterProjectPropertyActor.Command> {
 
     public interface Command {}
+    private String[] next_operators =   {"Merge0"};
+    private String next_operators_policy = "RoundRobinRoutingPolicy";
 
     public static class ProcessEdgeBatch implements Command {
         public final ObjectNode packet;
@@ -23,7 +26,8 @@ public class FilterProjectPropertyActor extends AbstractBehavior<FilterProjectPr
 
     private final int chunkSize;
     private final AtomicInteger totalCount;
-    private final String[] names = {"john", "mary"};
+    private final String[] names = {"john", "mary", "alice", "bob", "charlie",
+            "diana", "edward", "fiona", "george", "kathy"};
 
     public static Behavior<Command> create(int chunkSize, AtomicInteger totalCount) {
         return Behaviors.setup(ctx -> new FilterProjectPropertyActor(ctx, chunkSize, totalCount));
@@ -33,6 +37,7 @@ public class FilterProjectPropertyActor extends AbstractBehavior<FilterProjectPr
         super(ctx);
         this.chunkSize = chunkSize;
         this.totalCount = totalCount;
+        ctx.getLog().info("FilterVertexActor created at path {}", ctx.getSelf().path());
     }
 
     @Override
@@ -48,11 +53,16 @@ public class FilterProjectPropertyActor extends AbstractBehavior<FilterProjectPr
         ObjectMapper mapper = new ObjectMapper();
 
         Split split = new Split();
-        split.initialize(packet, chunkSize, "Terminal", batch -> {
+        split.initialize(
+                packet,
+                chunkSize,
+                next_operators,
+                next_operators_policy,
+                batch -> {
             ArrayNode data = (ArrayNode) batch.get("data");
             int count = data.size();
             totalCount.addAndGet(count);
-            getContext().getLog().info("⛳ Final batch sent with {} properties. Total now: {}", count, totalCount.get());
+            getContext().getLog().info(" Final batch from {} actor is sent with {} properties. Total now: {}", getContext().getSelf().path(), count, totalCount.get());
         });
 
         for (JsonNode edge : edges) {

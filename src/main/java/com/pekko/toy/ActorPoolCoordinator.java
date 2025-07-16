@@ -26,6 +26,7 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
     private final List<ActorRef<FilterVertexActor.Command>> vertexRouters = new ArrayList<>();
     private final List<ActorRef<FilterEdgeActor.Command>> edgeRouters = new ArrayList<>();
     private final List<ActorRef<FilterProjectPropertyActor.Command>> propertyRouters = new ArrayList<>();
+    //// -------------------uncomment this part to use without pools
     private final int vertexChunkSize;
     private final int edgeChunkSize;
     private final int propertyChunkSize;
@@ -51,7 +52,7 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
         super(context);
         this.context = context;
         this.config = config;
-
+//// -------------------uncomment this part to use without pools
         this.vertexChunkSize = getChunkSize(config, "vertex");
         this.edgeChunkSize = getChunkSize(config, "edge");
         this.propertyChunkSize = getChunkSize(config, "property");
@@ -60,11 +61,70 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
         setupActorCommunication();
     }
 
+
+
+
+    //// -------------------uncomment this part to use without pools
+//    private void createActorPools() {
+//        vertexRouters.add(context.spawn(FilterVertexActor.create(vertexChunkSize), "vertex-router"));
+//        edgeRouters.add(context.spawn(FilterEdgeActor.create(edgeChunkSize), "edge-router"));
+//        propertyRouters.add(context.spawn(FilterProjectPropertyActor.create(propertyChunkSize, totalCount), "property-router"));
+//    }
+
+// -------------------uncomment this part to use actor pools
     private void createActorPools() {
-        vertexRouters.add(context.spawn(FilterVertexActor.create(vertexChunkSize), "vertex-router"));
-        edgeRouters.add(context.spawn(FilterEdgeActor.create(edgeChunkSize), "edge-router"));
-        propertyRouters.add(context.spawn(FilterProjectPropertyActor.create(propertyChunkSize, totalCount), "property-router"));
+        List<? extends Config> pools = config.getConfigList("pekko.toy-system.actor-pools");
+
+        for (Config poolConfig : pools) {
+            String type = poolConfig.getString("type");
+            int chunkSize = poolConfig.getInt("chunk-size");
+            int instances = poolConfig.getInt("instances");
+            int poolCount = poolConfig.hasPath("pools") ? poolConfig.getInt("pools") : 1;
+
+            for (int poolIndex = 1; poolIndex <= poolCount; poolIndex++) {
+                String poolName = type + "-pool-" + poolIndex;
+
+                switch (type) {
+                    case "vertex":
+                        vertexRouters.add(createRouterPool(
+                                FilterVertexActor.create(chunkSize),
+                                instances,
+                                poolName
+                        ));
+                        break;
+
+                    case "edge":
+                        edgeRouters.add(createRouterPool(
+                                FilterEdgeActor.create(chunkSize),
+                                instances,
+                                poolName
+                        ));
+                        break;
+
+                    case "property":
+                        propertyRouters.add(createRouterPool(
+                                FilterProjectPropertyActor.create(chunkSize, totalCount),
+                                instances,
+                                poolName
+                        ));
+                        break;
+
+                    default:
+                        context.getLog().warn("Unknown actor type in config: {}", type);
+                }
+            }
+
+            context.getLog().info("Created {} pools of {} actors ({} instances each)",
+                    poolCount, type, instances);
+        }
     }
+
+private <T> ActorRef<T> createRouterPool(Behavior<T> behavior, int instances, String name) {
+    PoolRouter<T> pool = Routers.pool(instances, behavior).withRoundRobinRouting();
+    return context.spawn(pool, name);
+}
+
+//-------------------------------------------------------
 
     private void setupActorCommunication() {
         context.scheduleOnce(
@@ -102,19 +162,18 @@ public class ActorPoolCoordinator extends AbstractBehavior<ActorPoolCoordinator.
 
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode schema = mapper.createObjectNode()
-                .put("Vid", "long")
-                .put("Count", "int")
-                .put("Name", "string");
+                .put("Vid", "string")
+//                .put("Count", "int")
+                .put("EdgeId", "string")
+                .put("PropId", "string");
 
-        // Change this to JSON Object
         ObjectNode metadata =  mapper.createObjectNode();
         metadata.set("schema", schema);
-        metadata.put("sortAttribute", "Vid");
+//        metadata.put("sortAttribute", "Vid");
         metadata.put("queryId", queryId);
         metadata.put("source", "coordinator");
         metadata.put("timestamp", System.currentTimeMillis());
-        metadata.put("packetType", "vertex");
-        // NOTE: No nextOperator yet for initial packet
+        metadata.put("currentOperator", "vertex");
 
         ArrayNode data = mapper.createArrayNode();
 

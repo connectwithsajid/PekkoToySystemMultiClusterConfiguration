@@ -10,11 +10,14 @@ import org.apache.pekko.actor.typed.ActorRef;
 import org.apache.pekko.actor.typed.javadsl.*;
 
 public class FilterEdgeActor extends AbstractBehavior<FilterEdgeActor.Command> {
-
+    private int count_edges =  5;
     public interface Command {}
+    private String[] next_operators =   {"PropertyActor0","PropertyActor1","PropertyActor2"};
+    private String next_operators_policy = "RoundRobinRoutingPolicy";
 
     public static class ProcessVertexBatch implements Command {
         public final ObjectNode packet;
+
         public final ActorRef<FilterProjectPropertyActor.Command> propertyRouter;
 
         public ProcessVertexBatch(ObjectNode packet, ActorRef<FilterProjectPropertyActor.Command> propertyRouter) {
@@ -32,6 +35,7 @@ public class FilterEdgeActor extends AbstractBehavior<FilterEdgeActor.Command> {
     public FilterEdgeActor(ActorContext<Command> ctx, int chunkSize) {
         super(ctx);
         this.edgeChunkSize = chunkSize;
+        ctx.getLog().info("FilterVertexActor created at path {}", ctx.getSelf().path());
     }
 
     @Override
@@ -48,13 +52,18 @@ public class FilterEdgeActor extends AbstractBehavior<FilterEdgeActor.Command> {
         ArrayNode vertices = (ArrayNode) networkPacket.get("data");
 
         Split split = new Split();
-        split.initialize(networkPacket, edgeChunkSize, "PropertyActor", batch -> {
+        split.initialize(
+                networkPacket,
+                edgeChunkSize,
+                next_operators,
+                next_operators_policy,
+                batch -> {
             msg.propertyRouter.tell(new FilterProjectPropertyActor.ProcessEdgeBatch(batch));
         });
 
         for (JsonNode vertex : vertices) {
             long vid = vertex.get("Vid").asLong();
-            for (int i = 1; i <= 4; i++) {
+            for (int i = 1; i <= count_edges; i++) {
                 ObjectNode edge = mapper.createObjectNode().put("EdgeId", "E_" + vid + "_" + i);
                 split.send(edge);
             }

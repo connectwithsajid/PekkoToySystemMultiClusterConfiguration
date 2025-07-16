@@ -1,0 +1,1074 @@
+[INFO] --- exec:3.1.1:java (default-cli) @ multicluster-pekko-toy-system ---
+10:59:25.287 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO org.apache.pekko.event.slf4j.Slf4jLogger -- Slf4jLogger started
+SLF4J: A number (1) of logging calls during the initialization phase have been intercepted and are
+SLF4J: now being replayed. These are subject to the filtering rules of the underlying logging system.
+SLF4J: See also https://www.slf4j.org/codes.html#replay
+10:59:25.399 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO org.apache.pekko.remote.artery.ArteryTransport -- Remoting started with transport [Artery tcp]; listening on address [pekko://PekkoToySystem@127.0.0.1:25520] with UID [-598673198704415454]
+10:59:25.403 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO org.apache.pekko.cluster.Cluster -- Cluster Node [pekko://PekkoToySystem@127.0.0.1:25520] - Starting up, Pekko version [1.1.3] ...
+10:59:25.452 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO org.apache.pekko.cluster.Cluster -- Cluster Node [pekko://PekkoToySystem@127.0.0.1:25520] - Registered cluster JMX MBean [pekko:type=Cluster]
+10:59:25.452 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO org.apache.pekko.cluster.Cluster -- Cluster Node [pekko://PekkoToySystem@127.0.0.1:25520] - Started up successfully
+10:59:25.457 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO org.apache.pekko.cluster.Cluster -- Cluster Node [pekko://PekkoToySystem@127.0.0.1:25520] - No downing-provider-class configured, manual cluster downing required, see https://pekko.apache.org/docs/pekko/current/typed/cluster.html#downing
+10:59:25.460 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO org.apache.pekko.cluster.Cluster -- Cluster Node [pekko://PekkoToySystem@127.0.0.1:25520] - Node [pekko://PekkoToySystem@127.0.0.1:25520] is JOINING itself (with roles [Primary, query-executor, dc-default], version [0.0.0]) and forming new cluster
+10:59:25.461 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO org.apache.pekko.cluster.Cluster -- Cluster Node [pekko://PekkoToySystem@127.0.0.1:25520] - is the new leader among reachable nodes (more leaders may exist)
+10:59:25.463 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO org.apache.pekko.cluster.Cluster -- Cluster Node [pekko://PekkoToySystem@127.0.0.1:25520] - Leader is moving node [pekko://PekkoToySystem@127.0.0.1:25520] to [Up]
+10:59:25.589 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.MultiClusterPekkoToySystemMain$RootBehavior -- Cluster node started with roles: [Primary, query-executor]
+10:59:25.589 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterVertexActor -- FilterVertexActor created at path pekko://PekkoToySystem/user/actor-pool-coordinator/vertex-router
+10:59:25.590 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterEdgeActor -- FilterVertexActor created at path pekko://PekkoToySystem/user/actor-pool-coordinator/edge-router
+10:59:25.590 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor -- FilterVertexActor created at path pekko://PekkoToySystem/user/actor-pool-coordinator/property-router
+10:59:26.614 [PekkoToySystem-pekko.actor.default-dispatcher-3] INFO com.pekko.toy.ActorPoolCoordinator -- === DISTRIBUTED QUERY query-1 PROCESSING STARTED ===
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "EdgeActor"
+  },
+  "data" : [ {
+    "Vid" : 1
+  }, {
+    "Vid" : 2
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "EdgeActor"
+  },
+  "data" : [ {
+    "Vid" : 3
+  }, {
+    "Vid" : 4
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "EdgeActor"
+  },
+  "data" : [ {
+    "Vid" : 5
+  }, {
+    "Vid" : 6
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "EdgeActor"
+  },
+  "data" : [ {
+    "Vid" : 7
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "PropertyActor"
+  },
+  "data" : [ {
+    "EdgeId" : "E_1_1"
+  }, {
+    "EdgeId" : "E_1_2"
+  }, {
+    "EdgeId" : "E_1_3"
+  }, {
+    "EdgeId" : "E_1_4"
+  }, {
+    "EdgeId" : "E_1_5"
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "PropertyActor"
+  },
+  "data" : [ {
+    "EdgeId" : "E_1_6"
+  }, {
+    "EdgeId" : "E_2_1"
+  }, {
+    "EdgeId" : "E_2_2"
+  }, {
+    "EdgeId" : "E_2_3"
+  }, {
+    "EdgeId" : "E_2_4"
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "PropertyActor"
+  },
+  "data" : [ {
+    "EdgeId" : "E_2_5"
+  }, {
+    "EdgeId" : "E_2_6"
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_1_1_john"
+  }, {
+    "PropId" : "E_1_1_mary"
+  }, {
+    "PropId" : "E_1_1_alice"
+  }, {
+    "PropId" : "E_1_2_john"
+  }, {
+    "PropId" : "E_1_2_mary"
+  }, {
+    "PropId" : "E_1_2_alice"
+  }, {
+    "PropId" : "E_1_3_john"
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "PropertyActor"
+  },
+  "data" : [ {
+    "EdgeId" : "E_3_1"
+  }, {
+    "EdgeId" : "E_3_2"
+  }, {
+    "EdgeId" : "E_3_3"
+  }, {
+    "EdgeId" : "E_3_4"
+  }, {
+    "EdgeId" : "E_3_5"
+  } ]
+}
+10:59:26.629 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 7 properties. Total now: 7
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "PropertyActor"
+  },
+  "data" : [ {
+    "EdgeId" : "E_3_6"
+  }, {
+    "EdgeId" : "E_4_1"
+  }, {
+    "EdgeId" : "E_4_2"
+  }, {
+    "EdgeId" : "E_4_3"
+  }, {
+    "EdgeId" : "E_4_4"
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_1_3_mary"
+  }, {
+    "PropId" : "E_1_3_alice"
+  }, {
+    "PropId" : "E_1_4_john"
+  }, {
+    "PropId" : "E_1_4_mary"
+  }, {
+    "PropId" : "E_1_4_alice"
+  }, {
+    "PropId" : "E_1_5_john"
+  }, {
+    "PropId" : "E_1_5_mary"
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "PropertyActor"
+  },
+  "data" : [ {
+    "EdgeId" : "E_4_5"
+  }, {
+    "EdgeId" : "E_4_6"
+  } ]
+}
+10:59:26.630 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 7 properties. Total now: 14
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_1_5_alice"
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "PropertyActor"
+  },
+  "data" : [ {
+    "EdgeId" : "E_5_1"
+  }, {
+    "EdgeId" : "E_5_2"
+  }, {
+    "EdgeId" : "E_5_3"
+  }, {
+    "EdgeId" : "E_5_4"
+  }, {
+    "EdgeId" : "E_5_5"
+  } ]
+}
+10:59:26.630 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 1 properties. Total now: 15
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "PropertyActor"
+  },
+  "data" : [ {
+    "EdgeId" : "E_5_6"
+  }, {
+    "EdgeId" : "E_6_1"
+  }, {
+    "EdgeId" : "E_6_2"
+  }, {
+    "EdgeId" : "E_6_3"
+  }, {
+    "EdgeId" : "E_6_4"
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "PropertyActor"
+  },
+  "data" : [ {
+    "EdgeId" : "E_6_5"
+  }, {
+    "EdgeId" : "E_6_6"
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_1_6_john"
+  }, {
+    "PropId" : "E_1_6_mary"
+  }, {
+    "PropId" : "E_1_6_alice"
+  }, {
+    "PropId" : "E_2_1_john"
+  }, {
+    "PropId" : "E_2_1_mary"
+  }, {
+    "PropId" : "E_2_1_alice"
+  }, {
+    "PropId" : "E_2_2_john"
+  } ]
+}
+10:59:26.631 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 7 properties. Total now: 22
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "PropertyActor"
+  },
+  "data" : [ {
+    "EdgeId" : "E_7_1"
+  }, {
+    "EdgeId" : "E_7_2"
+  }, {
+    "EdgeId" : "E_7_3"
+  }, {
+    "EdgeId" : "E_7_4"
+  }, {
+    "EdgeId" : "E_7_5"
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_2_2_mary"
+  }, {
+    "PropId" : "E_2_2_alice"
+  }, {
+    "PropId" : "E_2_3_john"
+  }, {
+    "PropId" : "E_2_3_mary"
+  }, {
+    "PropId" : "E_2_3_alice"
+  }, {
+    "PropId" : "E_2_4_john"
+  }, {
+    "PropId" : "E_2_4_mary"
+  } ]
+}
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "PropertyActor"
+  },
+  "data" : [ {
+    "EdgeId" : "E_7_6"
+  } ]
+}
+10:59:26.631 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 7 properties. Total now: 29
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_2_4_alice"
+  } ]
+}
+10:59:26.631 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 1 properties. Total now: 30
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_2_5_john"
+  }, {
+    "PropId" : "E_2_5_mary"
+  }, {
+    "PropId" : "E_2_5_alice"
+  }, {
+    "PropId" : "E_2_6_john"
+  }, {
+    "PropId" : "E_2_6_mary"
+  }, {
+    "PropId" : "E_2_6_alice"
+  } ]
+}
+10:59:26.631 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 6 properties. Total now: 36
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_3_1_john"
+  }, {
+    "PropId" : "E_3_1_mary"
+  }, {
+    "PropId" : "E_3_1_alice"
+  }, {
+    "PropId" : "E_3_2_john"
+  }, {
+    "PropId" : "E_3_2_mary"
+  }, {
+    "PropId" : "E_3_2_alice"
+  }, {
+    "PropId" : "E_3_3_john"
+  } ]
+}
+10:59:26.632 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 7 properties. Total now: 43
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_3_3_mary"
+  }, {
+    "PropId" : "E_3_3_alice"
+  }, {
+    "PropId" : "E_3_4_john"
+  }, {
+    "PropId" : "E_3_4_mary"
+  }, {
+    "PropId" : "E_3_4_alice"
+  }, {
+    "PropId" : "E_3_5_john"
+  }, {
+    "PropId" : "E_3_5_mary"
+  } ]
+}
+10:59:26.632 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 7 properties. Total now: 50
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_3_5_alice"
+  } ]
+}
+10:59:26.632 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 1 properties. Total now: 51
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_3_6_john"
+  }, {
+    "PropId" : "E_3_6_mary"
+  }, {
+    "PropId" : "E_3_6_alice"
+  }, {
+    "PropId" : "E_4_1_john"
+  }, {
+    "PropId" : "E_4_1_mary"
+  }, {
+    "PropId" : "E_4_1_alice"
+  }, {
+    "PropId" : "E_4_2_john"
+  } ]
+}
+10:59:26.633 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 7 properties. Total now: 58
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_4_2_mary"
+  }, {
+    "PropId" : "E_4_2_alice"
+  }, {
+    "PropId" : "E_4_3_john"
+  }, {
+    "PropId" : "E_4_3_mary"
+  }, {
+    "PropId" : "E_4_3_alice"
+  }, {
+    "PropId" : "E_4_4_john"
+  }, {
+    "PropId" : "E_4_4_mary"
+  } ]
+}
+10:59:26.633 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 7 properties. Total now: 65
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_4_4_alice"
+  } ]
+}
+10:59:26.633 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 1 properties. Total now: 66
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_4_5_john"
+  }, {
+    "PropId" : "E_4_5_mary"
+  }, {
+    "PropId" : "E_4_5_alice"
+  }, {
+    "PropId" : "E_4_6_john"
+  }, {
+    "PropId" : "E_4_6_mary"
+  }, {
+    "PropId" : "E_4_6_alice"
+  } ]
+}
+10:59:26.633 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 6 properties. Total now: 72
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_5_1_john"
+  }, {
+    "PropId" : "E_5_1_mary"
+  }, {
+    "PropId" : "E_5_1_alice"
+  }, {
+    "PropId" : "E_5_2_john"
+  }, {
+    "PropId" : "E_5_2_mary"
+  }, {
+    "PropId" : "E_5_2_alice"
+  }, {
+    "PropId" : "E_5_3_john"
+  } ]
+}
+10:59:26.634 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 7 properties. Total now: 79
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_5_3_mary"
+  }, {
+    "PropId" : "E_5_3_alice"
+  }, {
+    "PropId" : "E_5_4_john"
+  }, {
+    "PropId" : "E_5_4_mary"
+  }, {
+    "PropId" : "E_5_4_alice"
+  }, {
+    "PropId" : "E_5_5_john"
+  }, {
+    "PropId" : "E_5_5_mary"
+  } ]
+}
+10:59:26.634 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 7 properties. Total now: 86
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_5_5_alice"
+  } ]
+}
+10:59:26.634 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 1 properties. Total now: 87
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_5_6_john"
+  }, {
+    "PropId" : "E_5_6_mary"
+  }, {
+    "PropId" : "E_5_6_alice"
+  }, {
+    "PropId" : "E_6_1_john"
+  }, {
+    "PropId" : "E_6_1_mary"
+  }, {
+    "PropId" : "E_6_1_alice"
+  }, {
+    "PropId" : "E_6_2_john"
+  } ]
+}
+10:59:26.634 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 7 properties. Total now: 94
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_6_2_mary"
+  }, {
+    "PropId" : "E_6_2_alice"
+  }, {
+    "PropId" : "E_6_3_john"
+  }, {
+    "PropId" : "E_6_3_mary"
+  }, {
+    "PropId" : "E_6_3_alice"
+  }, {
+    "PropId" : "E_6_4_john"
+  }, {
+    "PropId" : "E_6_4_mary"
+  } ]
+}
+10:59:26.634 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 7 properties. Total now: 101
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_6_4_alice"
+  } ]
+}
+10:59:26.635 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 1 properties. Total now: 102
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_6_5_john"
+  }, {
+    "PropId" : "E_6_5_mary"
+  }, {
+    "PropId" : "E_6_5_alice"
+  }, {
+    "PropId" : "E_6_6_john"
+  }, {
+    "PropId" : "E_6_6_mary"
+  }, {
+    "PropId" : "E_6_6_alice"
+  } ]
+}
+10:59:26.635 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 6 properties. Total now: 108
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_7_1_john"
+  }, {
+    "PropId" : "E_7_1_mary"
+  }, {
+    "PropId" : "E_7_1_alice"
+  }, {
+    "PropId" : "E_7_2_john"
+  }, {
+    "PropId" : "E_7_2_mary"
+  }, {
+    "PropId" : "E_7_2_alice"
+  }, {
+    "PropId" : "E_7_3_john"
+  } ]
+}
+10:59:26.635 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 7 properties. Total now: 115
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_7_3_mary"
+  }, {
+    "PropId" : "E_7_3_alice"
+  }, {
+    "PropId" : "E_7_4_john"
+  }, {
+    "PropId" : "E_7_4_mary"
+  }, {
+    "PropId" : "E_7_4_alice"
+  }, {
+    "PropId" : "E_7_5_john"
+  }, {
+    "PropId" : "E_7_5_mary"
+  } ]
+}
+10:59:26.635 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 7 properties. Total now: 122
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_7_5_alice"
+  } ]
+}
+10:59:26.636 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 1 properties. Total now: 123
+[Split.submitBatch] Sending batch:
+{
+  "metadata" : {
+    "schema" : {
+      "Vid" : "long",
+      "Count" : "int",
+      "Name" : "string"
+    },
+    "sortAttribute" : "Vid",
+    "queryId" : "query-1",
+    "source" : "coordinator",
+    "timestamp" : 1752602366613,
+    "packetType" : "vertex",
+    "nextOperator" : "Terminal"
+  },
+  "data" : [ {
+    "PropId" : "E_7_6_john"
+  }, {
+    "PropId" : "E_7_6_mary"
+  }, {
+    "PropId" : "E_7_6_alice"
+  } ]
+}
+10:59:26.636 [PekkoToySystem-pekko.actor.default-dispatcher-6] INFO com.pekko.toy.actors.FilterProjectPropertyActor --  Final batch sent with 3 properties. Total now: 126
+

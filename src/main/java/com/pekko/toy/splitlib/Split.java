@@ -5,10 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Split {
     private int batchSize;
     private int numEltsInPkt;
-    private String nextOperator;
+    private String[] nextOperators;
+    private String next_operators_policy;
     private ObjectNode templateMetadata;
     private ObjectNode outgoingPkt;
     private ArrayNode dataArray;
@@ -18,11 +22,13 @@ public class Split {
     public void initialize(
             ObjectNode networkPacket,
             int batchSize,
-            String nextOperator,
+            String[]  nextOperators,
+            String next_operators_policy,
             java.util.function.Consumer<ObjectNode> batchConsumer
     ) {
         this.batchSize = batchSize;
-        this.nextOperator = nextOperator;
+        this.nextOperators = nextOperators;
+        this.next_operators_policy = next_operators_policy;
         this.numEltsInPkt = 0;
         this.batchConsumer = batchConsumer;
 
@@ -56,13 +62,31 @@ public class Split {
     }
 
     private void submitBatch() {
-        ObjectNode batchToSend = outgoingPkt.deepCopy();
+
+
+        ObjectNode batchToSend = outgoingPkt;
+                //.deepCopy();
 
         // Set or update next operator ID
         ObjectNode metadataToUse = (ObjectNode) batchToSend.get("metadata");
-        metadataToUse.put("nextOperator", this.nextOperator);
-        //  Check testing
+//        metadataToUse.put("nextOperator", Arrays.toString(this.nextOperators));
+        ArrayNode opsArray = metadataToUse.arrayNode();
+        for (String op : nextOperators) {
+            opsArray.add(op);
+        }
+
+        metadataToUse.set("nextOperator", opsArray);
+        metadataToUse.put("nextOperatorPolicy", next_operators_policy);
+
+        try {
+            String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(batchToSend);
+            System.out.println("[Split.submitBatch] Sending batch:\n" + prettyJson);
+        } catch (Exception e) {
+            System.err.println("Failed to convert batch to JSON string: " + e.getMessage());
+        }
+
         batchConsumer.accept(batchToSend);
+
     }
 
     private void prepareNextPacket() {
@@ -73,8 +97,9 @@ public class Split {
 
     private ObjectNode createOutgoingPacket() {
         ObjectNode newPacket = mapper.createObjectNode();
-        // redundant copy
-        newPacket.set("metadata", templateMetadata.deepCopy());
+
+        newPacket.set("metadata", templateMetadata);
+        //.deepCopy());
         newPacket.set("data", dataArray);
         return newPacket;
     }
